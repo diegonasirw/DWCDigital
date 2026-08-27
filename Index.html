@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DWC Digital — Websites for small businesses that mean business</title>
+<meta name="description" content="DWC Digital builds fast, modern websites for small businesses. Get online with a site that actually converts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAFA;
+    --surface:#FFFFFF;
+    --surface-2:#F1F1F8;
+    --line:#E4E4EF;
+    --text:#12142B;
+    --muted:#6B6F8C;
+    --accent:#2563EB;
+    --accent-2:#F5B700;
+    --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.02em; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{ max-width:1160px; margin:0 auto; padding:0 24px; }
+
+  /* subtle grid texture background */
+  .bg-grid{
+    position:fixed; inset:0; z-index:-1;
+    background-image:
+      linear-gradient(to right, rgba(37,99,235,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37,99,235,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  /* NAV */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,250,250,0.7);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 24px; max-width:1160px; margin:0 auto; }
+  .logo{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.1rem; }
+  .logo-mark{
+    width:32px; height:32px; border-radius:9px;
+    background:var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .logo-mark svg{ width:19px; height:19px; }
+  .nav-links{ display:flex; gap:32px; align-items:center; }
+  .nav-links a{ color:var(--muted); font-size:0.95rem; transition:color .2s; }
+  .nav-links a:hover{ color:var(--text); }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:11px 20px; border-radius:999px;
+    font-weight:600; font-size:0.92rem;
+    background:var(--text); color:var(--bg);
+    transition:transform .15s ease, box-shadow .15s ease;
+    border:none; cursor:pointer;
+  }
+  .btn:hover{ transform:translateY(-2px); box-shadow:0 8px 24px rgba(37,99,235,0.35); }
+  .btn-ghost{
+    background:transparent; color:var(--text); border:1px solid var(--line);
+  }
+  .btn-ghost:hover{ box-shadow:none; border-color:var(--accent); }
+  .mobile-hide{ display:flex; }
+
+  /* HERO */
+  .hero{
+    padding:100px 0 80px;
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:60px; align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono'; font-size:0.78rem; color:var(--accent-2);
+    border:1px solid rgba(245,183,0,0.3); background:rgba(245,183,0,0.06);
+    padding:6px 12px; border-radius:999px; margin-bottom:24px;
+  }
+  .eyebrow::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--accent-2); box-shadow:0 0 8px var(--accent-2); }
+  .hero h1{
+    font-size:clamp(2.4rem, 5vw, 3.6rem);
+    font-weight:700; line-height:1.05; margin-bottom:22px;
+  }
+  .hero h1 .grad{
+    background:linear-gradient(100deg, var(--accent-2), var(--accent));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p.lead{ color:var(--muted); font-size:1.1rem; max-width:480px; margin-bottom:32px; }
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:36px; }
+  .hero-stats{ display:flex; gap:32px; }
+  .stat b{ display:block; font-family:'Space Grotesk'; font-size:1.5rem; }
+  .stat span{ color:var(--muted); font-size:0.82rem; }
+
+  /* Browser mockup — signature element */
+  .mock-wrap{ position:relative; }
+  .browser{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; box-shadow:0 40px 80px -20px rgba(0,0,0,0.6);
+    transform:perspective(1000px) rotateY(-6deg) rotateX(2deg);
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{ 0%,100%{ transform:perspective(1000px) rotateY(-6deg) rotateX(2deg) translateY(0);} 50%{ transform:perspective(1000px) rotateY(-6deg) rotateX(2deg) translateY(-10px);} }
+  .browser-bar{
+    display:flex; align-items:center; gap:6px; padding:12px 14px;
+    background:var(--surface-2); border-bottom:1px solid var(--line);
+  }
+  .dot{ width:9px; height:9px; border-radius:50%; background:#D3D3E3; }
+  .browser-bar .url{
+    margin-left:10px; font-family:'JetBrains Mono'; font-size:0.72rem; color:var(--muted);
+    background:var(--bg); padding:4px 12px; border-radius:6px; flex:1;
+  }
+  .browser-body{ padding:22px; display:flex; flex-direction:column; gap:12px; }
+  .block{ border-radius:8px; background:var(--surface-2); position:relative; overflow:hidden; opacity:0; animation:assemble .6s ease forwards; }
+  .block::after{ content:''; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(37,99,235,0.18), transparent); transform:translateX(-100%); animation:shimmer 2.4s ease-in-out infinite; }
+  @keyframes assemble{ from{ opacity:0; transform:translateY(14px) scale(0.98);} to{ opacity:1; transform:translateY(0) scale(1);} }
+  @keyframes shimmer{ 0%{transform:translateX(-100%);} 60%,100%{transform:translateX(120%);} }
+  .b1{ height:34px; width:55%; animation-delay:.1s; background:linear-gradient(135deg,var(--accent),var(--accent-2)); }
+  .b2{ height:12px; width:80%; animation-delay:.3s; }
+  .b3{ height:12px; width:65%; animation-delay:.4s; }
+  .b-row{ display:flex; gap:12px; margin-top:6px; }
+  .b4{ height:70px; flex:1; animation-delay:.55s; }
+  .b5{ height:70px; flex:1; animation-delay:.7s; }
+  .b6{ height:70px; flex:1; animation-delay:.85s; }
+  .b7{ height:38px; width:140px; animation-delay:1s; background:var(--accent-2); }
+
+  section{ padding:90px 0; border-top:1px solid var(--line); }
+  .section-head{ max-width:600px; margin-bottom:56px; }
+  .section-head .eyebrow{ margin-bottom:16px; }
+  .section-head h2{ font-size:clamp(1.8rem, 3.4vw, 2.6rem); margin-bottom:14px; }
+  .section-head p{ color:var(--muted); font-size:1.05rem; }
+
+  /* SERVICES */
+  .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:32px 28px; transition:border-color .2s, transform .2s;
+  }
+  .card:hover{ border-color:var(--accent); transform:translateY(-4px); }
+  .card .icon{
+    width:44px; height:44px; border-radius:10px; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(37,99,235,0.12); color:var(--accent-2); font-size:1.3rem;
+  }
+  .card h3{ font-size:1.15rem; margin-bottom:10px; }
+  .card p{ color:var(--muted); font-size:0.95rem; }
+
+  /* PROCESS */
+  .process{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+  .process::before{
+    content:''; position:absolute; top:22px; left:8%; right:8%; height:1px;
+    background:linear-gradient(90deg, transparent, var(--line) 15%, var(--line) 85%, transparent);
+  }
+  .step{ padding:0 20px; position:relative; }
+  .step-num{
+    width:44px; height:44px; border-radius:50%; background:var(--surface); border:1px solid var(--accent);
+    display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono'; color:var(--accent-2);
+    margin-bottom:20px; position:relative; z-index:2; font-size:0.9rem;
+  }
+  .step h3{ font-size:1.05rem; margin-bottom:8px; }
+  .step p{ color:var(--muted); font-size:0.9rem; }
+
+  /* PRICING */
+  .grid3-pricing{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; align-items:stretch; }
+  .price-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:36px 28px; display:flex; flex-direction:column;
+  }
+  .price-card.featured{ border-color:var(--accent); background:linear-gradient(180deg, rgba(37,99,235,0.08), var(--surface) 40%); position:relative; }
+  .price-card.featured::before{
+    content:'MOST POPULAR'; position:absolute; top:-12px; left:28px; font-family:'JetBrains Mono'; font-size:0.65rem;
+    background:var(--accent); color:#fff; padding:4px 10px; border-radius:6px; letter-spacing:0.05em;
+  }
+  .price-card h3{ font-size:1.1rem; color:var(--muted); font-weight:500; margin-bottom:6px; }
+  .price{ font-family:'Space Grotesk'; font-size:2.2rem; font-weight:700; margin-bottom:4px; }
+  .price span{ font-size:0.9rem; color:var(--muted); font-weight:400; }
+  .price-desc{ color:var(--muted); font-size:0.88rem; margin-bottom:26px; }
+  .price-list{ list-style:none; flex:1; margin-bottom:28px; }
+  .price-list li{ display:flex; gap:10px; padding:8px 0; font-size:0.92rem; color:var(--text); border-bottom:1px dashed var(--line); }
+  .price-list li::before{ content:'→'; color:var(--accent-2); }
+  .price-list li:last-child{ border-bottom:none; }
+
+  /* CTA */
+  .cta{
+    text-align:center; padding:100px 24px; border-radius:24px; margin:0 24px;
+    background:linear-gradient(160deg, var(--surface), var(--surface-2));
+    border:1px solid var(--line); position:relative; overflow:hidden;
+  }
+  .cta h2{ font-size:clamp(1.8rem,4vw,2.6rem); margin-bottom:18px; }
+  .cta p{ color:var(--muted); margin-bottom:32px; }
+
+  footer{ border-top:1px solid var(--line); padding:50px 0 30px; }
+  .foot-grid{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; margin-bottom:40px; }
+  .foot-col h4{ font-size:0.85rem; margin-bottom:16px; color:var(--muted); font-weight:500; }
+  .foot-col a{ display:block; color:var(--text); font-size:0.92rem; margin-bottom:10px; opacity:0.85; }
+  .foot-col a:hover{ opacity:1; color:var(--accent-2); }
+  .foot-bottom{ display:flex; justify-content:space-between; padding-top:24px; border-top:1px solid var(--line); color:var(--muted); font-size:0.85rem; flex-wrap:wrap; gap:12px;}
+
+  @media (max-width: 900px){
+    .hero{ grid-template-columns:1fr; padding:60px 0; }
+    .mobile-hide{ display:none; }
+    .grid3, .grid3-pricing{ grid-template-columns:1fr; }
+    .process{ grid-template-columns:1fr 1fr; gap:32px 16px; }
+    .process::before{ display:none; }
+    .foot-bottom{ flex-direction:column; }
+  }
+  /* nav underline */
+  .nav-links a{ position:relative; }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px;
+    background:var(--accent); transition:width .25s ease;
+  }
+  .nav-links a:hover::after{ width:100%; }
+
+  .foot-col a{ position:relative; display:inline-block; transition:transform .2s ease, opacity .2s ease; }
+  .foot-col a:hover{ transform:translateX(4px); }
+
+  /* scroll reveal */
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  .reveal-stagger.in .r-item{ opacity:1; transform:translateY(0); }
+  .r-item{ opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
+
+  /* card hover lift + glow */
+  .card, .price-card{ transition:border-color .25s, transform .25s, box-shadow .25s; }
+  .card:hover{ box-shadow:0 20px 40px -20px rgba(37,99,235,0.25); }
+  .price-card:hover{ transform:translateY(-6px); box-shadow:0 24px 48px -20px rgba(37,99,235,0.2); }
+  .step-num{ transition:transform .3s ease, background .3s ease; }
+  .step:hover .step-num{ transform:scale(1.1); background:var(--accent); color:#fff; border-color:var(--accent); }
+
+  /* magnetic buttons */
+  .btn{ will-change:transform; }
+
+  /* hero mockup mouse tilt handled via JS inline transform, keep transition smooth */
+  .browser{ transition:transform .15s ease-out; animation:float 7s ease-in-out infinite; }
+
+  /* animated gradient text sweep */
+  .hero h1 .grad{ background-size:200% auto; animation:sweep 5s linear infinite; }
+  @keyframes sweep{ to{ background-position:200% center; } }
+
+  /* spotlight cursor glow in hero */
+  .hero{ position:relative; }
+  .spotlight{
+    position:absolute; inset:0; pointer-events:none; z-index:-1;
+    background:radial-gradient(500px circle at var(--x,50%) var(--y,20%), rgba(37,99,235,0.10), transparent 70%);
+    transition:background .1s ease;
+  }
+
+  /* count-up stat pulse */
+  .stat b{ font-variant-numeric:tabular-nums; }
+
+  /* eyebrow pulse dot already present via ::before; add subtle pulse */
+  .eyebrow::before{ animation:pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:.5; transform:scale(0.75);} }
+
+  /* icon hover bounce on service cards */
+  .card .icon{ transition:transform .3s ease, background .3s ease; }
+  .card:hover .icon{ transform:rotate(-8deg) scale(1.08); background:rgba(37,99,235,0.2); }
+
+  @media (max-width: 900px){
+    .spotlight{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+    .reveal, .r-item{ opacity:1 !important; transform:none !important; }
+  }  .blink-cursor{ animation:blink 1.1s step-end infinite; }
+  @keyframes blink{ 0%,45%{ opacity:1;} 50%,95%{ opacity:0;} 100%{opacity:1;} }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<header>
+  <nav>
+    <div class="logo"><div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="9,6 3,12 9,18" stroke="#F5B700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="15,6 21,12 15,18" stroke="#F5B700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="11.2" y="7" width="1.6" height="10" rx="0.8" fill="#FFFFFF" class="blink-cursor"/>
+      </svg>
+    </div>DWC Digital</div>
+    <div class="nav-links mobile-hide">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="btn">Get a free quote</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap" style="border:none;">
+    <div class="spotlight" id="spotlight"></div>
+    <div>
+      <div class="eyebrow">now booking new projects</div>
+      <h1>Small business.<br>A <span class="grad">website that works</span> as hard as you do.</h1>
+      <p class="lead">DWC Digital designs and builds fast, modern websites for small businesses — from first sketch to a live site that brings in customers.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn">Start your project →</a>
+        <a href="#services" class="btn btn-ghost">See what's included</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>2–4 wks</b><span>typical turnaround</span></div>
+        <div class="stat"><b data-count="100">0%</b><span>mobile-ready</span></div>
+        <div class="stat"><b>1:1</b><span>direct with your builder</span></div>
+      </div>
+    </div>
+    <div class="mock-wrap" id="mockWrap">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="url">yourbusiness.com</div>
+        </div>
+        <div class="browser-body">
+          <div class="block b1"></div>
+          <div class="block b2"></div>
+          <div class="block b3"></div>
+          <div class="b-row">
+            <div class="block b4"></div>
+            <div class="block b5"></div>
+            <div class="block b6"></div>
+          </div>
+          <div class="block b7"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">services</div>
+        <h2>Everything you need to get online, done right.</h2>
+        <p>No jargon, no bloated packages — just a site built around what your business actually needs.</p>
+      </div>
+      <div class="grid3 reveal-stagger">
+        <div class="card r-item">
+          <div class="icon">✦</div>
+          <h3>Custom site design</h3>
+          <p>A site built around your brand and your customers, not a generic template stretched to fit.</p>
+        </div>
+        <div class="card r-item">
+          <div class="icon">⇄</div>
+          <h3>Mobile-first build</h3>
+          <p>Most of your customers are on their phones. Every site is designed and tested there first.</p>
+        </div>
+        <div class="card r-item">
+          <div class="icon">◎</div>
+          <h3>Local SEO setup</h3>
+          <p>Show up when nearby customers search for what you do — properly set up from day one.</p>
+        </div>
+        <div class="card r-item">
+          <div class="icon">✎</div>
+          <h3>Content & copywriting</h3>
+          <p>Don't know what to say? We write clear, plain-spoken copy that explains what you offer.</p>
+        </div>
+        <div class="card r-item">
+          <div class="icon">⚙</div>
+          <h3>Booking & contact tools</h3>
+          <p>Contact forms, booking calendars, and click-to-call — so leads become customers.</p>
+        </div>
+        <div class="card r-item">
+          <div class="icon">↻</div>
+          <h3>Ongoing support</h3>
+          <p>Sites change. Update your hours, prices, or photos any time — we keep it running smoothly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">process</div>
+        <h2>From first call to live site, in four steps.</h2>
+      </div>
+      <div class="process reveal-stagger">
+        <div class="step r-item">
+          <div class="step-num">01</div>
+          <h3>Discovery call</h3>
+          <p>15 minutes to understand your business, your customers, and what the site needs to do.</p>
+        </div>
+        <div class="step r-item">
+          <div class="step-num">02</div>
+          <h3>Design draft</h3>
+          <p>You'll see a real design of your homepage within days — not a mockup, an actual preview.</p>
+        </div>
+        <div class="step r-item">
+          <div class="step-num">03</div>
+          <h3>Build & review</h3>
+          <p>We build out every page, you review and request changes until it feels exactly right.</p>
+        </div>
+        <div class="step r-item">
+          <div class="step-num">04</div>
+          <h3>Launch</h3>
+          <p>Your site goes live, connected to your domain, ready for customers to find you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">pricing</div>
+        <h2>Straightforward packages. No surprise invoices.</h2>
+        <p>Every project is a little different — these are starting points. Final quotes are scoped to your needs on the discovery call.</p>
+      </div>
+      <div class="grid3-pricing reveal-stagger">
+        <div class="price-card r-item">
+          <h3>Starter</h3>
+          <div class="price">$799</div>
+          <p class="price-desc">A clean, single-page site to establish your presence online.</p>
+          <ul class="price-list">
+            <li>1-page responsive site</li>
+            <li>Contact form</li>
+            <li>Basic local SEO setup</li>
+            <li>1 round of revisions</li>
+          </ul>
+          <a href="#contact" class="btn btn-ghost">Get started</a>
+        </div>
+        <div class="price-card featured r-item">
+          <h3>Business</h3>
+          <div class="price">$1,899</div>
+          <p class="price-desc">A full multi-page site built to convert visitors into customers.</p>
+          <ul class="price-list">
+            <li>Up to 5 pages</li>
+            <li>Booking / contact tools</li>
+            <li>Copywriting included</li>
+            <li>Local SEO + Google Business setup</li>
+            <li>3 rounds of revisions</li>
+          </ul>
+          <a href="#contact" class="btn">Get started</a>
+        </div>
+        <div class="price-card r-item">
+          <h3>Growth</h3>
+          <div class="price">$3,500+</div>
+          <p class="price-desc">For businesses that need more — e-commerce, blog, or custom features.</p>
+          <ul class="price-list">
+            <li>Unlimited pages</li>
+            <li>Online store or booking system</li>
+            <li>Content strategy</li>
+            <li>Priority ongoing support</li>
+          </ul>
+          <a href="#contact" class="btn btn-ghost">Get started</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="border-top:none;">
+    <div class="wrap">
+      <div class="cta reveal" id="contact">
+        <div class="eyebrow" style="margin-left:auto; margin-right:auto; width:fit-content;">let's talk</div>
+        <h2>Ready for a website that brings in business?</h2>
+        <p>Tell us a bit about your business and we'll follow up within one business day.</p>
+        <div class="hero-cta" style="justify-content:center;">
+          <a href="mailto:hello@dwcdigital.com" class="btn">hello@dwcdigital.com</a>
+          <a href="tel:+19153733656" class="btn btn-ghost">(915) 373-3656</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="logo" style="margin-bottom:10px;"><div class="logo-mark">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="9,6 3,12 9,18" stroke="#F5B700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="15,6 21,12 15,18" stroke="#F5B700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="11.2" y="7" width="1.6" height="10" rx="0.8" fill="#FFFFFF" class="blink-cursor"/>
+          </svg>
+        </div>DWC Digital</div>
+        <p style="color:var(--muted); font-size:0.9rem; max-width:280px;">Websites for small businesses, built to actually bring in customers.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#services">Services</a>
+        <a href="#process">Process</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div class="foot-col">
+        <h4>Contact</h4>
+        <a href="mailto:hello@dwcdigital.com">hello@dwcdigital.com</a>
+        <a href="tel:+19153733656">(915) 373-3656</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 DWC Digital. All rights reserved.</span>
+      <span class="mono">Built with care.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal via IntersectionObserver
+  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // stagger r-items with incremental delay within each parent
+  document.querySelectorAll('.reveal-stagger').forEach(parent => {
+    const items = parent.querySelectorAll('.r-item');
+    items.forEach((item, i) => { item.style.transitionDelay = (i * 90) + 'ms'; });
+  });
+
+  // Cursor spotlight in hero
+  const hero = document.querySelector('.hero');
+  const spot = document.getElementById('spotlight');
+  if (hero && spot && window.matchMedia('(min-width:901px)').matches) {
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      spot.style.setProperty('--x', x + '%');
+      spot.style.setProperty('--y', y + '%');
+    });
+  }
+
+  // 3D tilt on browser mockup following cursor
+  const mockWrap = document.getElementById('mockWrap');
+  const browserEl = mockWrap ? mockWrap.querySelector('.browser') : null;
+  if (mockWrap && browserEl && window.matchMedia('(min-width:901px)').matches) {
+    mockWrap.addEventListener('mousemove', (e) => {
+      const rect = mockWrap.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      const rotY = -6 + px * 14;
+      const rotX = 2 - py * 10;
+      browserEl.style.animation = 'none';
+      browserEl.style.transform = `perspective(1000px) rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+    });
+    mockWrap.addEventListener('mouseleave', () => {
+      browserEl.style.transform = '';
+      browserEl.style.animation = 'float 7s ease-in-out infinite';
+    });
+  }
+
+  // Magnetic buttons
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.18}px, ${y * 0.35}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
+
+  // Animated count-up for stats with data-count
+  const countEls = document.querySelectorAll('[data-count]');
+  const countIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.getAttribute('data-count'), 10);
+        const suffix = el.textContent.replace(/[0-9]/g, '');
+        let cur = 0;
+        const duration = 1200;
+        const start = performance.now();
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          cur = Math.floor(progress * target);
+          el.textContent = cur + suffix;
+          if (progress < 1) requestAnimationFrame(tick);
+          else el.textContent = target + suffix;
+        }
+        requestAnimationFrame(tick);
+        countIO.unobserve(el);
+      }
+    });
+  }, { threshold: 0.6 });
+  countEls.forEach(el => countIO.observe(el));
+</script>
+</body>
+</html>
